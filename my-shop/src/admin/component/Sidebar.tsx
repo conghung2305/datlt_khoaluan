@@ -42,13 +42,13 @@ const Sidebar: React.FC = () => {
       icon: <FileTextOutlined style={iconStyle} />,
     },
     {
-      key: "/admin/feedback",
-      label: "Quản lý cảm nhận khách hàng",
+      key: "/admin/messageTitle",
+      label: "Quản lý nội dung",
       icon: <StarOutlined style={iconStyle} />,
     },
     {
-      key: "/admin/category",
-      label: "Quản lý danh mục sản phẩm",
+      key: "/admin/members",
+      label: "Quản lý người dùng",
       icon: <AppstoreOutlined style={iconStyle} />,
     },
     {

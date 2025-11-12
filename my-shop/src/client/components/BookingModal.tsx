@@ -58,7 +58,7 @@ const BookingModal: React.FC<BookingModalProps> = ({ isOpen, onClose }) => {
 
   return (
     <Modal
-      width={screens.md ? 1280 : "90%"}
+      width={screens.md ? 980 : "90%"}
       title={
         <div className="text-center pt-4">
           <h2 className="text-5xl font-bold text-lime-700 m-0">

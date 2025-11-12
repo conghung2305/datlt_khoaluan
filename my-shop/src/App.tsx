@@ -8,6 +8,8 @@ import Products from "./admin/pages/Products";
 import Contact from "./admin/pages/Contact";
 import Booking from "./admin/pages/Booking";
 import PrivateRoute from "./author/PrivatePolicy";
+import ListTitle from "./admin/pages/messageTitle/list";
+import Members from "./admin/pages/Members";
 
 
 function App() {
@@ -29,6 +31,8 @@ function App() {
           <Route path="products" element={<Products />} />
           <Route path="contact" element={<Contact />} />
           <Route path="booking" element={<Booking />} />
+          <Route path="messageTitle" element={<ListTitle/>} />
+           <Route path="members" element={<Members/>} />
         </Route>
 
         <Route

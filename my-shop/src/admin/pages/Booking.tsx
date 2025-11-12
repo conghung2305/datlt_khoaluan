@@ -3,9 +3,10 @@ import { Table, Space, message, Input, Row, Col, Modal } from "antd";
 import type { ColumnsType } from "antd/es/table";
 import axios from "axios";
 import dayjs from "dayjs";
+import type { IMember } from "../../types/IMembers";
 
 const { Search } = Input;
-const { confirm } = Modal;
+
 export interface IBooking {
   id: string;
   name: string;
@@ -22,11 +23,14 @@ interface DataType extends IBooking {
   dateObj: dayjs.Dayjs;
   timeObj: dayjs.Dayjs;
 }
+
 const Booking: React.FC = () => {
+  const [members, setMembers] = useState<IMember[]>([]);
   const [data, setData] = useState<DataType[]>([]);
   const [filteredData, setFilteredData] = useState<DataType[]>([]);
   const [loading, setLoading] = useState<boolean>(false);
   const [searchValue, setSearchValue] = useState<string>("");
+
   const handleDelete = async (record: DataType) => {
     const confirmDelete = window.confirm(
       `Bạn có chắc chắn muốn xóa đặt bàn của ${record.name} (${record.phone}) không?`
@@ -34,10 +38,7 @@ const Booking: React.FC = () => {
     if (!confirmDelete) return;
     try {
       await axios.delete(`http://localhost:3000/booking/${record.id}`);
-      console.log("Deleted id:", record.id);
       message.success("Xóa đặt bàn thành công!");
-
-      // Cập nhật lại dữ liệu bảng
       const updatedData = data.filter((item) => item.id !== record.id);
       setData(updatedData);
       setFilteredData(updatedData);
@@ -47,42 +48,68 @@ const Booking: React.FC = () => {
     }
   };
 
+  useEffect(() => {
+    const fetchMembers = async () => {
+      try {
+        const res = await axios.get<IMember[]>("http://localhost:3000/members");
+        setMembers(res.data);
+      } catch (error) {
+        console.error(error);
+        message.error("Không thể tải danh sách thành viên");
+      }
+    };
+
+    fetchMembers();
+  }, []);
+
   const columns: ColumnsType<DataType> = [
-    { title: "Name", dataIndex: "name", key: "name" },
+    { title: "Họ và tên", dataIndex: "name", key: "name" },
     { title: "Email", dataIndex: "email", key: "email" },
-    { title: "Phone", dataIndex: "phone", key: "phone" },
+    { title: "Số điện thoại", dataIndex: "phone", key: "phone" },
     {
-      title: "Date",
+      title: "Ngày đặt",
       dataIndex: "dateObj",
       key: "date",
       render: (date: dayjs.Dayjs) =>
         date.isValid() ? date.format("YYYY-MM-DD") : "-",
     },
     {
-      title: "Time",
+      title: "Giờ đặt",
       dataIndex: "timeObj",
       key: "time",
       render: (time: dayjs.Dayjs) =>
         time.isValid() ? time.format("HH:mm") : "-",
     },
-    { title: "People", dataIndex: "people", key: "people" },
-    { title: "Branch", dataIndex: "branch", key: "branch" },
-    { title: "Note", dataIndex: "note", key: "note" },
+    { title: "Số lượng", dataIndex: "people", key: "people" },
+    { title: "Chi nhánh", dataIndex: "branch", key: "branch" },
+    { title: "Ghi chú", dataIndex: "note", key: "note" },
     {
-      title: "Action",
+      title: "Loại khách",
+      key: "type",
+      render: (_, record) => {
+        const isMember = members.some(
+          (member) =>
+            member.email.toLowerCase() === record.email.toLowerCase() && member.phone === record.phone
+        );
+        return isMember ? "Thành viên" : "Khách vãng lai";
+      },
+    },
+    {
+      title: "Hành động",
       key: "action",
       render: (_, record) => (
         <Space size="middle">
-          <a onClick={() => message.info(`Viewing booking: ${record.name}`)}>
-            View
+          <a onClick={() => message.info(`Xem chi tiết: ${record.name}`)}>
+            Xem
           </a>
           <a onClick={() => handleDelete(record)} style={{ color: "red" }}>
-            Delete
+            Xóa
           </a>
         </Space>
       ),
     },
   ];
+
   useEffect(() => {
     const fetchData = async () => {
       setLoading(true);
@@ -109,6 +136,7 @@ const Booking: React.FC = () => {
 
     fetchData();
   }, []);
+
   const handleSearchChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     const value = e.target.value;
     setSearchValue(value);
@@ -122,9 +150,9 @@ const Booking: React.FC = () => {
       setFilteredData(filtered);
     }
   };
+
   return (
     <div style={{ padding: 20 }}>
-      {/* Ô tìm kiếm */}
       <Row justify="end" style={{ marginBottom: 16 }}>
         <Col>
           <Search
@@ -137,7 +165,6 @@ const Booking: React.FC = () => {
         </Col>
       </Row>
 
-      {/* Bảng dữ liệu */}
       <Table<DataType>
         columns={columns}
         dataSource={filteredData}

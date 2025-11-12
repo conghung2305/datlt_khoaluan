@@ -26,7 +26,7 @@ const SectionFutureTwo = () => {
         <div className="grid grid-cols-3 gap-4 mb-16">
           <FoodCard
             id="1"
-            image="https://picsum.photos/id/237/536/354"
+            image="https://picsum.photos/id/304/536/354"
             discount="30%"
             price="600.000"
             oldPrice="800.000"

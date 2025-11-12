@@ -5,12 +5,13 @@ import ContactModal from "./ContactModal";
 import LoginModal from "./LoginModal";
 import { UserOutlined } from "@ant-design/icons";
 import { FiSettings } from "react-icons/fi";
+import ModalMember from "./ModalMember";
 const Header = () => {
   const [isBookingModalOpen, setIsBookingModalOpen] = useState(false);
   const [isContactModalOpen, setIsContactModalOpen] = useState(false);
   const [isUserMenuOpen, setIsUserMenuOpen] = useState(false);
   const [isLoginOpen, setIsLoginOpen] = useState(false);
-  const [isRegisterOpen, setIsRegisterOpen] = useState(false);
+  const [isMemberModalOpen, setIsMemberModalOpen] = useState(false);
 
   return (
     <>
@@ -78,6 +79,17 @@ const Header = () => {
                     <FiSettings className="text-lg" />
                     Trang quản trị
                   </button>
+                  {/* Nút Đăng ký thành viên */}
+                  <button
+                    className="flex items-center gap-2 w-full text-left text-xl px-4 py-2 hover:bg-gray-300"
+                    onClick={() => {
+                      setIsMemberModalOpen(true); // mở modal
+                      setIsUserMenuOpen(false); // đóng menu user
+                    }}
+                  >
+                    <FiSettings className="text-lg" />
+                    Đăng ký thành viên
+                  </button>
                 </div>
               )}
             </div>
@@ -95,6 +107,10 @@ const Header = () => {
         onClose={() => setIsContactModalOpen(false)}
       />
       <LoginModal isOpen={isLoginOpen} onClose={() => setIsLoginOpen(false)} />
+      <ModalMember
+        isOpen={isMemberModalOpen}
+        onClose={() => setIsMemberModalOpen(false)}
+      />
     </>
   );
 };
