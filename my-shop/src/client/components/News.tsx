@@ -4,7 +4,7 @@ import backgroundNew from "../../assets/images/bg-page-lsht.png";
 const News = () => {
   return (
     <div 
-      className="w-full h-[700px] bg-cover bg-center pt-16"
+      className="w-full h-[600px] bg-cover bg-center pt-16"
       style={{ backgroundImage: `url(${backgroundNew})` }}
     >
       <div className="px-4 md:px-8 lg:px-16">

@@ -60,10 +60,10 @@ const Header = () => {
             <div className="relative">
               <button
                 onClick={() => setIsUserMenuOpen(!isUserMenuOpen)}
-                className={`w-16 h-16 rounded-full bg-green-600 flex items-center justify-center text-white 
+                className={`w-10 h-10 rounded-full bg-green-600 flex items-center justify-center text-white 
               hover:bg-green-700 transition focus:outline-green-600 focus:ring-0`}
               >
-                <UserOutlined className="text-3xl" />
+                <UserOutlined className="text-xl" />
               </button>
 
               {isUserMenuOpen && (

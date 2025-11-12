@@ -9,7 +9,7 @@ const FoodCard: React.FC<FoodCardProps> = ({
   name,
 }) => {
   return (
-    <div  key={id} className="relative bg-white rounded-tl-[60px] rounded-br-[60px] overflow-hidden shadow-md w-full max-w-[400px] h-[480px]">
+    <div  key={id} className="relative bg-white rounded-tl-[60px] rounded-br-[60px] overflow-hidden shadow-md w-full max-w-[250px] h-[400px]">
       <div className="relative">
         <img src={image} alt={name} className="w-full h-[480px] object-cover" />
         {discount && (
@@ -22,12 +22,12 @@ const FoodCard: React.FC<FoodCardProps> = ({
         <div className="text-xl text-center">
           <span className="font-semibold text-white text-center">{price}</span>
           {oldPrice && (
-            <span className="text-gray-300 line-through text-xl ml-2 text-center">
+            <span className="text-gray-300 line-through text-xs text-red-400 ml-2 text-center">
               {oldPrice}
             </span>
           )}
         </div>
-        <p className="text-2xl font-semibold mt-1 text-center">{name}</p>
+        <p className="text-sm font-semibold mt-1 text-center">{name}</p>
       </div>
     </div>
   );

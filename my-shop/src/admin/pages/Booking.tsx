@@ -1,33 +1,51 @@
 import React, { useEffect, useState } from "react";
-import { Table, Space, message } from "antd";
+import { Table, Space, message, Input, Row, Col, Modal } from "antd";
 import type { ColumnsType } from "antd/es/table";
 import axios from "axios";
 import dayjs from "dayjs";
 
-// Interface của Booking
+const { Search } = Input;
+const { confirm } = Modal;
 export interface IBooking {
   id: string;
   name: string;
   email: string;
   phone: string;
-  date: string; // API trả string dạng "YYYY-MM-DD"
-  time: string; // API trả string dạng "HH:mm"
+  date: string;
+  time: string;
   people: number;
   branch: string;
   note?: string;
 }
-
-// Thêm key để Table hiển thị
 interface DataType extends IBooking {
   key: string;
   dateObj: dayjs.Dayjs;
   timeObj: dayjs.Dayjs;
 }
-
-// Columns cho AntD Table
 const Booking: React.FC = () => {
   const [data, setData] = useState<DataType[]>([]);
+  const [filteredData, setFilteredData] = useState<DataType[]>([]);
   const [loading, setLoading] = useState<boolean>(false);
+  const [searchValue, setSearchValue] = useState<string>("");
+  const handleDelete = async (record: DataType) => {
+    const confirmDelete = window.confirm(
+      `Bạn có chắc chắn muốn xóa đặt bàn của ${record.name} (${record.phone}) không?`
+    );
+    if (!confirmDelete) return;
+    try {
+      await axios.delete(`http://localhost:3000/booking/${record.id}`);
+      console.log("Deleted id:", record.id);
+      message.success("Xóa đặt bàn thành công!");
+
+      // Cập nhật lại dữ liệu bảng
+      const updatedData = data.filter((item) => item.id !== record.id);
+      setData(updatedData);
+      setFilteredData(updatedData);
+    } catch (error) {
+      console.error(error);
+      message.error("Xóa thất bại, vui lòng thử lại!");
+    }
+  };
 
   const columns: ColumnsType<DataType> = [
     { title: "Name", dataIndex: "name", key: "name" },
@@ -58,14 +76,13 @@ const Booking: React.FC = () => {
           <a onClick={() => message.info(`Viewing booking: ${record.name}`)}>
             View
           </a>
-          <a onClick={() => message.warning(`Deleting booking: ${record.name}`)}>
+          <a onClick={() => handleDelete(record)} style={{ color: "red" }}>
             Delete
           </a>
         </Space>
       ),
     },
   ];
-
   useEffect(() => {
     const fetchData = async () => {
       setLoading(true);
@@ -73,19 +90,18 @@ const Booking: React.FC = () => {
         const response = await axios.get<IBooking[]>(
           "http://localhost:3000/booking"
         );
-
-        // Chuyển date và time thành dayjs + thêm key
         const dataWithKey: DataType[] = response.data.map((item, index) => ({
           ...item,
-          key: index.toString(),
+          key: item.id || index.toString(),
           dateObj: dayjs(item.date, "YYYY-MM-DD"),
           timeObj: dayjs(item.time, "HH:mm"),
         }));
 
         setData(dataWithKey);
+        setFilteredData(dataWithKey);
       } catch (error) {
         console.error(error);
-        message.error("Failed to fetch bookings");
+        message.error("Không thể tải danh sách đặt bàn");
       } finally {
         setLoading(false);
       }
@@ -93,8 +109,43 @@ const Booking: React.FC = () => {
 
     fetchData();
   }, []);
+  const handleSearchChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+    const value = e.target.value;
+    setSearchValue(value);
 
-  return <Table<DataType> columns={columns} dataSource={data} loading={loading} />;
+    if (value.trim() === "") {
+      setFilteredData(data);
+    } else {
+      const filtered = data.filter((item) =>
+        item.phone.toLowerCase().includes(value.toLowerCase())
+      );
+      setFilteredData(filtered);
+    }
+  };
+  return (
+    <div style={{ padding: 20 }}>
+      {/* Ô tìm kiếm */}
+      <Row justify="end" style={{ marginBottom: 16 }}>
+        <Col>
+          <Search
+            placeholder="Tìm theo số điện thoại"
+            allowClear
+            value={searchValue}
+            onChange={handleSearchChange}
+            style={{ width: 250 }}
+          />
+        </Col>
+      </Row>
+
+      {/* Bảng dữ liệu */}
+      <Table<DataType>
+        columns={columns}
+        dataSource={filteredData}
+        loading={loading}
+        pagination={{ pageSize: 8 }}
+      />
+    </div>
+  );
 };
 
 export default Booking;

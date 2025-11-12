@@ -38,12 +38,10 @@ const ContactModal: React.FC<ContactModalProps> = ({ isOpen, onClose }) => {
 
   return (
     <Modal
-      width={screens.md ? 1280 : "90%"}
+      width={screens.md ? 980 : "90%"}
       title={
         <div
           style={{
-            paddingLeft: modalPadding,
-            paddingRight: modalPadding,
             paddingTop: "16px",
           }}
         >

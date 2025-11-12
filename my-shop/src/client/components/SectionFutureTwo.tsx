@@ -3,7 +3,7 @@ import FoodCard from "./FoodCard";
 
 const SectionFutureTwo = () => {
   return (
-    <section className="relative w-full overflow-hidden h-full">
+    <section className="relative w-full overflow-hidden h-[600px]">
       <img
         src={SectionBanner}
         alt="Section Banner"
@@ -12,7 +12,7 @@ const SectionFutureTwo = () => {
       <div className="absolute inset-0 bg-lime-600/80"></div>
       <div className="relative z-10 h-full px-10 grid grid-cols-1 md:grid-cols-[1fr_1fr] gap-6 items-center">
         <div className="text-white max-w-full p-48">
-          <h1 className="text-3xl md:text-6xl font-extrabold leading-loose uppercase mb-4 mr-32 ">
+          <h1 className="text-3xl md:text-5xl font-extrabold leading-loose uppercase mb-4 mr-16 ">
             Khuyến mãi hot trong tuần
           </h1>
           <p className="text-white/80 text-sm md:text-lg leading-relaxed">
