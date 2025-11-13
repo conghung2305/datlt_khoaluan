@@ -4,21 +4,21 @@ import { ToastContainer } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
 import AdminLayout from "./admin/layouts/AdminLayout";
 import Dashboard from "./admin/pages/Dashboard";
-import Products from "./admin/pages/Products";
+
 import Contact from "./admin/pages/Contact";
 import Booking from "./admin/pages/Booking";
 import PrivateRoute from "./author/PrivatePolicy";
 import ListTitle from "./admin/pages/messageTitle/list";
 import Members from "./admin/pages/Members";
-
+import Menu from "./client/pages/Menu";
+import ListProducts from "./admin/pages/products/list";
 
 function App() {
   return (
     <>
       <Routes>
         <Route path="/" element={<HomePage />} />
-
-        {/* Các route admin được bảo vệ */}
+         <Route path="/menu" element={<Menu/>} />
         <Route
           path="/admin"
           element={
@@ -28,11 +28,11 @@ function App() {
           }
         >
           <Route index element={<Dashboard />} />
-          <Route path="products" element={<Products />} />
+          <Route path="products" element={<ListProducts/>} />
           <Route path="contact" element={<Contact />} />
           <Route path="booking" element={<Booking />} />
-          <Route path="messageTitle" element={<ListTitle/>} />
-           <Route path="members" element={<Members/>} />
+          <Route path="messageTitle" element={<ListTitle />} />
+          <Route path="members" element={<Members />} />
         </Route>
 
         <Route

@@ -6,6 +6,8 @@ import LoginModal from "./LoginModal";
 import { UserOutlined } from "@ant-design/icons";
 import { FiSettings } from "react-icons/fi";
 import ModalMember from "./ModalMember";
+
+import { NavLink } from "react-router-dom";
 const Header = () => {
   const [isBookingModalOpen, setIsBookingModalOpen] = useState(false);
   const [isContactModalOpen, setIsContactModalOpen] = useState(false);
@@ -18,15 +20,34 @@ const Header = () => {
       <header className="fixed top-0 left-0 z-50 bg-black bg-opacity-40 text-white w-full">
         <nav className="flex justify-center items-center py-3 space-x-16 text-sm tracking-wider text-white relative">
           {/* Menu links */}
-          <a href="#" className="hover:text-yellow-400 transition text-white">
+          <NavLink
+            to="/"
+            className={({ isActive }) =>
+              `transition text-white hover:text-yellow-400 ${
+                isActive ? "text-yellow-600 font-semibold" : ""
+              }`
+            }
+          >
+            TRANG CHỦ
+          </NavLink>
+          <NavLink
+            to="/menu"
+            className={({ isActive }) =>
+              `transition text-white hover:text-yellow-400 ${
+                isActive ? "text-yellow-600 font-semibold" : ""
+              }`
+            }
+          >
             THỰC ĐƠN
-          </a>
-          <a href="#" className="hover:text-yellow-400 transition text-white">
-            TIN TỨC
-          </a>
+          </NavLink>
+
           <a
-            onClick={() => setIsBookingModalOpen(true)}
-            className="hover:text-yellow-400 transition cursor-pointer text-white"
+            href="#"
+            onClick={(e) => {
+              e.preventDefault();
+              setIsBookingModalOpen(true);
+            }}
+            className="hover:text-yellow-400 transition cursor-pointer text-white active:text-yellow-400"
           >
             ĐẶT BÀN
           </a>
@@ -42,7 +63,6 @@ const Header = () => {
               GIANG MỸ
             </span>
           </div>
-
           <a href="#" className="hover:text-yellow-400 transition text-white">
             GIỚI THIỆU
           </a>
@@ -55,7 +75,6 @@ const Header = () => {
           >
             LIÊN HỆ
           </a>
-
           {/* Nút User hình tròn */}
           <div className="absolute right-4 top-1/2 transform -translate-y-1/2">
             <div className="relative">

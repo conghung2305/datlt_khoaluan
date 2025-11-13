@@ -9,7 +9,7 @@ import SectionFutureTwo from "../components/SectionFutureTwo";
 
 const HomePage = () => {
   return (
-    <div className="w-screen h-screen">
+    <div className="w-screen h-screen overflow-x-hidden">
       <Header />
       <Banner />
       <FeatureSection />

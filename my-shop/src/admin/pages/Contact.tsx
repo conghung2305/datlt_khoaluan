@@ -44,16 +44,16 @@ const columns: ColumnsType<DataType> = [
     dataIndex: "content",
     key: "content",
   },
-  {
-    title: "Action",
-    key: "action",
-    render: (_, record) => (
-      <Space size="middle">
-        <a>View</a>
-        <a>Delete</a>
-      </Space>
-    ),
-  },
+  // {
+  //   title: "Action",
+  //   key: "action",
+  //   render: (_, record) => (
+  //     <Space size="middle">
+  //       <a>View</a>
+  //       <a>Delete</a>
+  //     </Space>
+  //   ),
+  // },
 ];
 
 const Contact: React.FC = () => {

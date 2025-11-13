@@ -8,10 +8,6 @@ import {
   StarOutlined,
   AppstoreOutlined,
   ShoppingOutlined,
-  CommentOutlined,
- 
-  ShopOutlined,
-  GiftOutlined,
 } from "@ant-design/icons";
 import { Link, useLocation } from "react-router-dom";
 
@@ -21,9 +17,9 @@ const Sidebar: React.FC = () => {
   const location = useLocation();
   const iconStyle = {
     fontSize: 18,
-    color: "#555", 
+    color: "#555",
     transition: "all 0.3s ease",
-    marginRight: 8, 
+    marginRight: 8,
   };
   const menuItems = [
     {
@@ -53,23 +49,8 @@ const Sidebar: React.FC = () => {
     },
     {
       key: "/admin/products",
-      label: "Quản lý sản phẩm",
+      label: "Quản lý món ăn",
       icon: <ShoppingOutlined style={iconStyle} />,
-    },
-    {
-      key: "/admin/comments",
-      label: "Quản lý bình luận",
-      icon: <CommentOutlined style={iconStyle} />,
-    },
-    {
-      key: "/admin/branch",
-      label: "Quản lý cơ sở",
-      icon: <ShopOutlined style={iconStyle} />,
-    },
-    {
-      key: "/admin/voucher",
-      label: "Quản lý voucher",
-      icon: <GiftOutlined style={iconStyle} />,
     },
   ];
 

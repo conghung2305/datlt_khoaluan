@@ -1,5 +1,14 @@
 import React, { useState, useEffect } from "react";
-import { Table, Button, Space, Typography, Switch, Tooltip, Modal } from "antd";
+import {
+  Table,
+  Button,
+  Space,
+  Typography,
+  Switch,
+  Tooltip,
+  Modal,
+  Popconfirm,
+} from "antd";
 import axios from "axios";
 import { toast } from "react-toastify";
 import type { IMessage } from "../../../types/IMessageTitle";
@@ -56,13 +65,11 @@ const ListTitle: React.FC = () => {
     }
   };
 
-  // Sửa bài viết
   const handleEdit = (message: IMessage) => {
     setEditingMessage(message);
     setIsModalOpen(true);
   };
 
-  // Xóa bài viết (dùng alert)
   const handleDelete = async (id: string) => {
     const confirmDelete = window.confirm(
       "Bạn có chắc muốn xóa bài viết này không?"
@@ -93,12 +100,17 @@ const ListTitle: React.FC = () => {
       key: "action",
       render: (_: any, record: IMessage) => (
         <Space>
-          <Button type="link" onClick={() => handleEdit(record)}>
+          <Button type="primary" onClick={() => handleEdit(record)}>
             Sửa
           </Button>
-          <Button type="link" danger onClick={() => handleDelete(record.id)}>
-            Xóa
-          </Button>
+          <Popconfirm
+            title="Bạn có chắc muốn xóa?"
+            onConfirm={() => handleDelete(record.id)}
+            okText="Xóa"
+            cancelText="Hủy"
+          >
+            <Button danger>Xóa</Button>
+          </Popconfirm>
         </Space>
       ),
     },

@@ -1,9 +1,10 @@
 import React, { useEffect, useState } from "react";
-import { Table, Space, message, Input, Row, Col, Modal } from "antd";
+import { Table, Space, message, Input, Row, Col, Modal, Popconfirm, Button } from "antd";
 import type { ColumnsType } from "antd/es/table";
 import axios from "axios";
 import dayjs from "dayjs";
 import type { IMember } from "../../types/IMembers";
+import { toast } from "react-toastify";
 
 const { Search } = Input;
 
@@ -31,20 +32,17 @@ const Booking: React.FC = () => {
   const [loading, setLoading] = useState<boolean>(false);
   const [searchValue, setSearchValue] = useState<string>("");
 
-  const handleDelete = async (record: DataType) => {
-    const confirmDelete = window.confirm(
-      `Bạn có chắc chắn muốn xóa đặt bàn của ${record.name} (${record.phone}) không?`
-    );
-    if (!confirmDelete) return;
+  const handleDelete = async (id:string) => {
+
     try {
-      await axios.delete(`http://localhost:3000/booking/${record.id}`);
-      message.success("Xóa đặt bàn thành công!");
-      const updatedData = data.filter((item) => item.id !== record.id);
+      await axios.delete(`http://localhost:3000/booking/${id}`);
+      toast.success("Xóa đặt bàn thành công!");
+      const updatedData = data.filter((item) => item.id !== id);
       setData(updatedData);
       setFilteredData(updatedData);
     } catch (error) {
       console.error(error);
-      message.error("Xóa thất bại, vui lòng thử lại!");
+      toast.error("Xóa thất bại, vui lòng thử lại!");
     }
   };
 
@@ -99,12 +97,15 @@ const Booking: React.FC = () => {
       key: "action",
       render: (_, record) => (
         <Space size="middle">
-          <a onClick={() => message.info(`Xem chi tiết: ${record.name}`)}>
-            Xem
-          </a>
-          <a onClick={() => handleDelete(record)} style={{ color: "red" }}>
-            Xóa
-          </a>
+         
+          <Popconfirm
+            title="Bạn có chắc muốn xóa?"
+            onConfirm={() => handleDelete(record.id)}
+            okText="Xóa"
+            cancelText="Hủy"
+          >
+            <Button danger>Xóa</Button>
+          </Popconfirm>
         </Space>
       ),
     },
