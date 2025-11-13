@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from "react";
-import { Table, Typography, message } from "antd";
+import { Table, Typography, message, Input } from "antd";
 import axios from "axios";
 import type { ColumnsType } from "antd/es/table";
 
@@ -17,7 +17,9 @@ const API_URL = "http://localhost:3000/members";
 
 const Members: React.FC = () => {
   const [members, setMembers] = useState<IMember[]>([]);
+  const [filteredMembers, setFilteredMembers] = useState<IMember[]>([]);
   const [loading, setLoading] = useState(false);
+  const [search, setSearch] = useState<string>("");
 
   // Lấy danh sách thành viên
   const fetchMembers = async () => {
@@ -25,6 +27,7 @@ const Members: React.FC = () => {
     try {
       const res = await axios.get<IMember[]>(API_URL);
       setMembers(res.data);
+      setFilteredMembers(res.data);
     } catch (error) {
       console.error(error);
       message.error("Không thể tải danh sách thành viên");
@@ -36,6 +39,18 @@ const Members: React.FC = () => {
   useEffect(() => {
     fetchMembers();
   }, []);
+  useEffect(() => {
+    if (!search.trim()) {
+      setFilteredMembers(members);
+    } else {
+      const filtered = members.filter(
+        (m) =>
+          m.fullName.toLowerCase().includes(search.toLowerCase()) ||
+          m.phone.includes(search)
+      );
+      setFilteredMembers(filtered);
+    }
+  }, [search, members]);
 
   const columns: ColumnsType<IMember> = [
     {
@@ -74,9 +89,20 @@ const Members: React.FC = () => {
 
   return (
     <div style={{ padding: 20 }}>
-      <Title level={3}>Danh sách thành viên</Title>
+      <div className="flex justify-between">
+        <Title level={3}>Danh sách thành viên</Title>
+
+        <Input
+          placeholder="Tìm kiếm theo tên hoặc số điện thoại..."
+          value={search}
+          onChange={(e) => setSearch(e.target.value)}
+          allowClear
+          style={{ marginBottom: 16, maxWidth: 400 }}
+        />
+      </div>
+
       <Table
-        dataSource={members}
+        dataSource={filteredMembers}
         columns={columns}
         rowKey="id"
         loading={loading}
