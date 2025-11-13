@@ -63,12 +63,26 @@ const Header = () => {
               GIANG MỸ
             </span>
           </div>
-          <a href="#" className="hover:text-yellow-400 transition text-white">
-            GIỚI THIỆU
-          </a>
-          <a href="#" className="hover:text-yellow-400 transition text-white">
-            TUYỂN DỤNG
-          </a>
+                 <NavLink
+            to="/aboutpage"
+            className={({ isActive }) =>
+              `transition text-white hover:text-yellow-400 ${
+                isActive ? "text-yellow-600 font-semibold" : ""
+              }`
+            }
+          >
+          GIỚI THIỆU
+          </NavLink>
+          <NavLink
+            to="/recruiment"
+            className={({ isActive }) =>
+              `transition text-white hover:text-yellow-400 ${
+                isActive ? "text-yellow-600 font-semibold" : ""
+              }`
+            }
+          >
+           TUYỂN DỤNG
+          </NavLink>
           <a
             onClick={() => setIsContactModalOpen(true)}
             className="hover:text-yellow-400 transition cursor-pointer text-white"

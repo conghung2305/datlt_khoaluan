@@ -12,13 +12,17 @@ import ListTitle from "./admin/pages/messageTitle/list";
 import Members from "./admin/pages/Members";
 import Menu from "./client/pages/Menu";
 import ListProducts from "./admin/pages/products/list";
+import RecruitmentPage from "./client/pages/Recuiment";
+import AboutPage from "./client/pages/AboutPages";
 
 function App() {
   return (
     <>
       <Routes>
         <Route path="/" element={<HomePage />} />
-         <Route path="/menu" element={<Menu/>} />
+         <Route path="menu" element={<Menu/>} />
+         <Route path="recruiment" element={<RecruitmentPage/>} />
+         <Route path="aboutpage" element={<AboutPage/>} />
         <Route
           path="/admin"
           element={
@@ -33,6 +37,7 @@ function App() {
           <Route path="booking" element={<Booking />} />
           <Route path="messageTitle" element={<ListTitle />} />
           <Route path="members" element={<Members />} />
+          
         </Route>
 
         <Route
