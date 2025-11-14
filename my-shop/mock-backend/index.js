@@ -8,9 +8,9 @@ app.use(cors());
 app.use(bodyParser.json());
 
 const SECRET_KEY = "123456789";
-const users = []; // Lưu tạm user vào memory
+const users = []; 
 
-// Đăng ký
+
 app.post("/register", (req, res) => {
   const { email, password } = req.body;
   const exists = users.find(u => u.email === email);
@@ -22,7 +22,7 @@ app.post("/register", (req, res) => {
   res.json({ token, email });
 });
 
-// Đăng nhập
+
 app.post("/login", (req, res) => {
   const { email, password } = req.body;
   const user = users.find(u => u.email === email && u.password === password);
@@ -32,5 +32,5 @@ app.post("/login", (req, res) => {
   res.json({ token, email });
 });
 
-// Start server
+
 app.listen(5000, () => console.log("Mock backend running on http://localhost:5000"));

@@ -2,39 +2,53 @@ import React, { useEffect, useState } from "react";
 
 import axios from "axios";
 import ComboCard from "../ComboCard";
+import { toast } from "react-toastify";
 
 export interface IProduct {
   id: string;
   image: string;
-  title: string;
+  name: string;
   price: number;
-  originalPrice: number;
-  discountPercent: number;
+  oldPrice: number;
 }
 
 const TatCaTab = () => {
   const [products, setProducts] = useState<IProduct[]>([]);
 
   useEffect(() => {
-    axios
-      .get("http://localhost:3000/products")
-      .then((res) => setProducts(res.data))
-      .catch((err) => console.error("Lỗi khi tải sản phẩm:", err));
+    const fetchProducts = async () => {
+      try {
+        const res = await axios.get("http://localhost:3000/products");
+        setProducts(res.data);
+        console.log("data", res.data);
+      } catch (error) {
+        console.error("Lỗi khi tải sản phẩm:", error);
+        toast.error("Không thể tải danh sách sản phẩm!");
+      }
+    };
+
+    fetchProducts();
   }, []);
 
   return (
     <div className="w-full flex justify-center mt-8">
       <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-4 gap-6">
-        {products.map((product) => (
-          <ComboCard
-            key={product.id}
-            image={product.image}
-            discountPercent={product.discountPercent}
-            title={product.title}
-            price={product.price}
-            originalPrice={product.originalPrice}
-          />
-        ))}
+        {products.map((product) => {
+          const discountPercent = Math.round(
+            ((product.oldPrice - product.price) / product.oldPrice) * 100
+          );
+
+          return (
+            <ComboCard
+              key={product.id}
+              image={product.image}
+              discountPercent={discountPercent}
+              title={product.name}
+              price={product.price}
+              originalPrice={product.oldPrice}
+            />
+          );
+        })}
       </div>
     </div>
   );

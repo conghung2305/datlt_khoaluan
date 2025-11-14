@@ -12,16 +12,12 @@ export interface IMember {
   phone: string;
   createdAt: string;
 }
-
 const API_URL = "http://localhost:3000/members";
-
 const Members: React.FC = () => {
   const [members, setMembers] = useState<IMember[]>([]);
   const [filteredMembers, setFilteredMembers] = useState<IMember[]>([]);
   const [loading, setLoading] = useState(false);
   const [search, setSearch] = useState<string>("");
-
-  // Lấy danh sách thành viên
   const fetchMembers = async () => {
     setLoading(true);
     try {
@@ -35,7 +31,6 @@ const Members: React.FC = () => {
       setLoading(false);
     }
   };
-
   useEffect(() => {
     fetchMembers();
   }, []);
@@ -51,7 +46,6 @@ const Members: React.FC = () => {
       setFilteredMembers(filtered);
     }
   }, [search, members]);
-
   const columns: ColumnsType<IMember> = [
     {
       title: "STT",
@@ -91,7 +85,6 @@ const Members: React.FC = () => {
     <div style={{ padding: 20 }}>
       <div className="flex justify-between">
         <Title level={3}>Danh sách thành viên</Title>
-
         <Input
           placeholder="Tìm kiếm theo tên hoặc số điện thoại..."
           value={search}
@@ -100,7 +93,6 @@ const Members: React.FC = () => {
           style={{ marginBottom: 16, maxWidth: 400 }}
         />
       </div>
-
       <Table
         dataSource={filteredMembers}
         columns={columns}
