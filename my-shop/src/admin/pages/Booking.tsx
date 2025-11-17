@@ -1,5 +1,15 @@
 import React, { useEffect, useState } from "react";
-import { Table, Space, message, Input, Row, Col, Modal, Popconfirm, Button } from "antd";
+import {
+  Table,
+  Space,
+  message,
+  Input,
+  Row,
+  Col,
+  Modal,
+  Popconfirm,
+  Button,
+} from "antd";
 import type { ColumnsType } from "antd/es/table";
 import axios from "axios";
 import dayjs from "dayjs";
@@ -32,8 +42,7 @@ const Booking: React.FC = () => {
   const [loading, setLoading] = useState<boolean>(false);
   const [searchValue, setSearchValue] = useState<string>("");
 
-  const handleDelete = async (id:string) => {
-
+  const handleDelete = async (id: string) => {
     try {
       await axios.delete(`http://localhost:3000/booking/${id}`);
       toast.success("Xóa đặt bàn thành công!");
@@ -87,17 +96,35 @@ const Booking: React.FC = () => {
       render: (_, record) => {
         const isMember = members.some(
           (member) =>
-            member.email.toLowerCase() === record.email.toLowerCase() && member.phone === record.phone
+            member.email.toLowerCase() === record.email.toLowerCase() &&
+            member.phone === record.phone
         );
         return isMember ? "Thành viên" : "Khách vãng lai";
       },
     },
+
+    {
+      title: "Giảm giá",
+      key: "discount",
+      render: (_, record) => {
+        const isMember = members.some(
+          (member) =>
+            member.email.toLowerCase() === record.email.toLowerCase() &&
+            member.phone === record.phone
+        );
+        return (
+          <span style={{ fontWeight: 600, color: isMember ? "green" : "#555" }}>
+            {isMember ? "10%" : "0%"}
+          </span>
+        );
+      },
+    },
+
     {
       title: "Hành động",
       key: "action",
       render: (_, record) => (
         <Space size="middle">
-         
           <Popconfirm
             title="Bạn có chắc muốn xóa?"
             onConfirm={() => handleDelete(record.id)}

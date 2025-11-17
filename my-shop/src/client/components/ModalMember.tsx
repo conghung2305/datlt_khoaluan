@@ -36,10 +36,10 @@ const ModalMember: React.FC<ModalMemberProps> = ({ isOpen, onClose }) => {
 
       if (existingMember) {
         toast.error("Email này đã được đăng ký!");
-        return; // không tiếp tục thêm
+        return; 
       }
 
-      // Nếu email chưa tồn tại thì tạo mới
+
       const newMember: IMember = {
         id: Date.now().toString(),
         fullName: values.fullName,
@@ -50,7 +50,7 @@ const ModalMember: React.FC<ModalMemberProps> = ({ isOpen, onClose }) => {
 
       await axios.post(API_URL, newMember);
 
-      toast.success("Đăng ký thành viên thành công!");
+      toast.success("Đăng ký thành viên thành công! Quý khách được giảm 10% khi sử dụng các dịch vụ ăn uống tại nhà hàng!");
       form.resetFields();
       onClose();
     } catch (error) {
